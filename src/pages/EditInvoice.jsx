@@ -318,7 +318,7 @@ function EditInvoice() {
 
           <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 3 }}>
             <Typography variant="h5">
-              Total: ${calculateTotal().toFixed(2)}
+              Total: {calculateTotal().toFixed(2)}
             </Typography>
           </Box>
 
