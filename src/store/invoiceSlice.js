@@ -28,9 +28,9 @@ const mockInvoices = [
         rate: 15,
       },
     ],
-    subtotal: 4000,
+    subtotal: 4015,
     tax: 0,
-    total: 4000,
+    total: 4015,
     createdAt: "2024-01-01T00:00:00.000Z",
     updatedAt: "2024-01-01T00:00:00.000Z",
   },
@@ -83,9 +83,20 @@ const invoiceSlice = createSlice({
     },
     updateInvoice: (state, action) => {
       const { id, updates } = action.payload;
+
       const index = state.invoices.findIndex((invoice) => invoice.id === id);
       if (index !== -1) {
-        state.invoices[index] = { ...state.invoices[index], ...updates };
+        const total = updates.lineItems.reduce((total, item) => {
+          const quantity = Number.parseFloat(item.quantity) || 0;
+          const rate = Number.parseFloat(item.rate) || 0;
+          return total + quantity * rate;
+        }, 0);
+        state.invoices[index] = {
+          ...state.invoices[index],
+          ...updates,
+          subtotal: total,
+          total,
+        };
       }
     },
     updateInvoiceStatus: (state, action) => {
